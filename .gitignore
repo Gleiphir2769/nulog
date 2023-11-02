@@ -1,4 +1,6 @@
 *_result/
+*.csv
+*.pt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
