@@ -401,9 +401,10 @@ class SimpleLossCompute:
         self.is_test = is_test
 
     def __call__(self, x, y, norm):
-        x = self.generator(x)
-        y = y.reshape(-1)
-        loss = self.criterion(x, y)
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        x = self.generator(x).to(device)
+        y = y.reshape(-1).type(torch.LongTensor).to(device)
+        loss = self.criterion(x, y).to(device)
         if not self.is_test:
             loss.backward()
             if self.opt is not None:
@@ -431,7 +432,7 @@ class LogParser:
 
 
     def parse(self, logName, batch_size=5, mask_percentage=1.0, pad_len=150, N=1, d_model=256,
-              dropout=0.1,  lr=0.001, betas=(0.9, 0.999), weight_decay=0.005, nr_epochs=5, num_samples=0, step_size=10):
+              dropout=0.1,  lr=0.001, betas=(0.9, 0.999), weight_decay=0.005, nr_epochs=1, num_samples=0, step_size=10):
         self.logName = logName
         self.mask_percentage=mask_percentage
         self.pad_len = pad_len
@@ -463,6 +464,7 @@ class LogParser:
         criterion = nn.CrossEntropyLoss()
         model = self.make_model(self.tokenizer.n_words, self.tokenizer.n_words, N=self.N, d_model=self.d_model, d_ff=self.d_model,
                                 dropout=self.dropout, max_len=self.pad_len)
+        model.to('cuda')
         model.cuda()
         model_opt = torch.optim.Adam(model.parameters(), lr=self.lr, betas=self.betas, weight_decay=self.weight_decay)
        

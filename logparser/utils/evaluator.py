@@ -48,7 +48,7 @@ def evaluate(groundtruth, parsedresult):
     (precision, recall, f_measure, accuracy_PA) = get_accuracy(df_groundtruth['EventId'], df_parsedlog['EventId'])
     print('Precision: %.4f, Recall: %.4f, F1_measure: %.4f, accuracy_PA: %.4f, accuracy_exact_string_matching: %.4f, edit_distance_result_mean: %.4f, edit_distance_result_std: %.4f'%(precision, recall, f_measure, accuracy_PA, accuracy_exact_string_matching, edit_distance_result_mean, edit_distance_result_std))
     
-    return accuracy_PA, accuracy_exact_string_matching, edit_distance_result_mean, edit_distance_result_std
+    return precision, recall, f_measure, accuracy_PA, accuracy_exact_string_matching, edit_distance_result_mean, edit_distance_result_std
 
 def get_accuracy(series_groundtruth, series_parsedlog, debug=False):
     """ Compute accuracy metrics between log parsing results and ground truth
