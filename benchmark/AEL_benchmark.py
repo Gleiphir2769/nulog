@@ -19,109 +19,109 @@ benchmark_settings = {
         'merge_percent' : 0.5
         },
 
-    'Hadoop': {
-        'log_file': 'Hadoop/Hadoop_2k.log',
-        'log_format': '<Date> <Time> <Level> \[<Process>\] <Component>: <Content>', 
-        'regex': [r'(\d+\.){3}\d+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
+    # 'Hadoop': {
+    #     'log_file': 'Hadoop/Hadoop_2k.log',
+    #     'log_format': '<Date> <Time> <Level> \[<Process>\] <Component>: <Content>',
+    #     'regex': [r'(\d+\.){3}\d+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Spark': {
+    #     'log_file': 'Spark/Spark_2k.log',
+    #     'log_format': '<Date> <Time> <Level> <Component>: <Content>',
+    #     'regex': [r'(\d+\.){3}\d+', r'\b[KGTM]?B\b', r'([\w-]+\.){2,}[\w-]+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Zookeeper': {
+    #     'log_file': 'Zookeeper/Zookeeper_2k.log',
+    #     'log_format': '<Date> <Time> - <Level>  \[<Node>:<Component>@<Id>\] - <Content>',
+    #     'regex': [r'(/|)(\d+\.){3}\d+(:\d+)?'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
 
-    'Spark': {
-        'log_file': 'Spark/Spark_2k.log',
-        'log_format': '<Date> <Time> <Level> <Component>: <Content>', 
-        'regex': [r'(\d+\.){3}\d+', r'\b[KGTM]?B\b', r'([\w-]+\.){2,}[\w-]+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'Zookeeper': {
-        'log_file': 'Zookeeper/Zookeeper_2k.log',
-        'log_format': '<Date> <Time> - <Level>  \[<Node>:<Component>@<Id>\] - <Content>',
-        'regex': [r'(/|)(\d+\.){3}\d+(:\d+)?'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'BGL': {
-        'log_file': 'BGL/BGL_2k.log',
-        'log_format': '<Label> <Timestamp> <Date> <Node> <Time> <NodeRepeat> <Type> <Component> <Level> <Content>',
-        'regex': [r'core\.\d+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.5
-        },
-
-    'HPC': {
-        'log_file': 'HPC/HPC_2k.log',
-        'log_format': '<LogId> <Node> <Component> <State> <Time> <Flag> <Content>',
-        'regex': [r'=\d+'],
-        'minEventCount': 5,
-        'merge_percent' : 0.4
-        },
-
-    'Thunderbird': {
-        'log_file': 'Thunderbird/Thunderbird_2k.log',
-        'log_format': '<Label> <Timestamp> <Date> <User> <Month> <Day> <Time> <Location> <Component>(\[<PID>\])?: <Content>',
-        'regex': [r'(\d+\.){3}\d+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'Windows': {
-        'log_file': 'Windows/Windows_2k.log',
-        'log_format': '<Date> <Time>, <Level>                  <Component>    <Content>',
-        'regex': [r'0x.*?\s'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'Linux': {
-        'log_file': 'Linux/Linux_2k.log',
-        'log_format': '<Month> <Date> <Time> <Level> <Component>(\[<PID>\])?: <Content>',
-        'regex': [r'(\d+\.){3}\d+', r'\d{2}:\d{2}:\d{2}'],
-        'minEventCount': 2,
-        'merge_percent' : 0.6
-        },
-
-    'Andriod': {
-        'log_file': 'Andriod/Andriod_2k.log',
-        'log_format': '<Date> <Time>  <Pid>  <Tid> <Level> <Component>: <Content>',
-        'regex': [r'(/[\w-]+)+', r'([\w-]+\.){2,}[\w-]+', r'\b(\-?\+?\d+)\b|\b0[Xx][a-fA-F\d]+\b|\b[a-fA-F\d]{4,}\b'],
-        'minEventCount': 2,
-        'merge_percent' : 0.6
-        },
-
-    'HealthApp': {
-        'log_file': 'HealthApp/HealthApp_2k.log',
-        'log_format': '<Time>\|<Component>\|<Pid>\|<Content>',
-        'regex': [],
-        'minEventCount': 2,
-        'merge_percent' : 0.6
-        },
-
-    'Apache': {
-        'log_file': 'Apache/Apache_2k.log',
-        'log_format': '\[<Time>\] \[<Level>\] <Content>',
-        'regex': [r'(\d+\.){3}\d+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'Proxifier': {
-        'log_file': 'Proxifier/Proxifier_2k.log',
-        'log_format': '\[<Time>\] <Program> - <Content>',
-        'regex': [r'<\d+\s?sec', r'([\w-]+\.)+[\w-]+(:\d+)?', r'\d{2}:\d{2}(:\d{2})*', r'[KGTM]B'],
-        'minEventCount': 2,
-        'merge_percent' : 0.4
-        },
-
-    'OpenSSH': {
-        'log_file': 'OpenSSH/OpenSSH_2k.log',
-        'log_format': '<Date> <Day> <Time> <Component> sshd\[<Pid>\]: <Content>',
-        'regex': [r'(\d+\.){3}\d+', r'([\w-]+\.){2,}[\w-]+'],
-        'minEventCount': 10,
-        'merge_percent' : 0.7
-        },
+    # 'BGL': {
+    #     'log_file': 'BGL/BGL_2k.log',
+    #     'log_format': '<Label> <Timestamp> <Date> <Node> <Time> <NodeRepeat> <Type> <Component> <Level> <Content>',
+    #     'regex': [r'core\.\d+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.5
+    #     },
+    #
+    # 'HPC': {
+    #     'log_file': 'HPC/HPC_2k.log',
+    #     'log_format': '<LogId> <Node> <Component> <State> <Time> <Flag> <Content>',
+    #     'regex': [r'=\d+'],
+    #     'minEventCount': 5,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Thunderbird': {
+    #     'log_file': 'Thunderbird/Thunderbird_2k.log',
+    #     'log_format': '<Label> <Timestamp> <Date> <User> <Month> <Day> <Time> <Location> <Component>(\[<PID>\])?: <Content>',
+    #     'regex': [r'(\d+\.){3}\d+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Windows': {
+    #     'log_file': 'Windows/Windows_2k.log',
+    #     'log_format': '<Date> <Time>, <Level>                  <Component>    <Content>',
+    #     'regex': [r'0x.*?\s'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Linux': {
+    #     'log_file': 'Linux/Linux_2k.log',
+    #     'log_format': '<Month> <Date> <Time> <Level> <Component>(\[<PID>\])?: <Content>',
+    #     'regex': [r'(\d+\.){3}\d+', r'\d{2}:\d{2}:\d{2}'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.6
+    #     },
+    #
+    # 'Andriod': {
+    #     'log_file': 'Andriod/Andriod_2k.log',
+    #     'log_format': '<Date> <Time>  <Pid>  <Tid> <Level> <Component>: <Content>',
+    #     'regex': [r'(/[\w-]+)+', r'([\w-]+\.){2,}[\w-]+', r'\b(\-?\+?\d+)\b|\b0[Xx][a-fA-F\d]+\b|\b[a-fA-F\d]{4,}\b'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.6
+    #     },
+    #
+    # 'HealthApp': {
+    #     'log_file': 'HealthApp/HealthApp_2k.log',
+    #     'log_format': '<Time>\|<Component>\|<Pid>\|<Content>',
+    #     'regex': [],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.6
+    #     },
+    #
+    # 'Apache': {
+    #     'log_file': 'Apache/Apache_2k.log',
+    #     'log_format': '\[<Time>\] \[<Level>\] <Content>',
+    #     'regex': [r'(\d+\.){3}\d+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'Proxifier': {
+    #     'log_file': 'Proxifier/Proxifier_2k.log',
+    #     'log_format': '\[<Time>\] <Program> - <Content>',
+    #     'regex': [r'<\d+\s?sec', r'([\w-]+\.)+[\w-]+(:\d+)?', r'\d{2}:\d{2}(:\d{2})*', r'[KGTM]B'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.4
+    #     },
+    #
+    # 'OpenSSH': {
+    #     'log_file': 'OpenSSH/OpenSSH_2k.log',
+    #     'log_format': '<Date> <Day> <Time> <Component> sshd\[<Pid>\]: <Content>',
+    #     'regex': [r'(\d+\.){3}\d+', r'([\w-]+\.){2,}[\w-]+'],
+    #     'minEventCount': 10,
+    #     'merge_percent' : 0.7
+    #     },
 
     'OpenStack': {
         'log_file': 'OpenStack/OpenStack_2k.log',
@@ -131,13 +131,13 @@ benchmark_settings = {
         'merge_percent' : 0.5
         },
 
-    'Mac': {
-        'log_file': 'Mac/Mac_2k.log',
-        'log_format': '<Month>  <Date> <Time> <User> <Component>\[<PID>\]( \(<Address>\))?: <Content>',
-        'regex': [r'([\w-]+\.){2,}[\w-]+'],
-        'minEventCount': 2,
-        'merge_percent' : 0.6
-        }
+    # 'Mac': {
+    #     'log_file': 'Mac/Mac_2k.log',
+    #     'log_format': '<Month>  <Date> <Time> <User> <Component>\[<PID>\]( \(<Address>\))?: <Content>',
+    #     'regex': [r'([\w-]+\.){2,}[\w-]+'],
+    #     'minEventCount': 2,
+    #     'merge_percent' : 0.6
+    #     }
 }
 
 bechmark_result = []
@@ -150,12 +150,16 @@ for dataset, setting in benchmark_settings.items():
                              minEventCount=setting['minEventCount'], merge_percent=setting['merge_percent'], rex=setting['regex'])
     parser.parse(log_file)
     
-    accuracy_PA, accuracy_exact_string_matching, edit_distance_result, edit_distance_result_median = evaluator.evaluate(
+    _, _, _, accuracy_PA, accuracy_exact_string_matching, edit_distance_result, edit_distance_result_median = evaluator.evaluate(
         groundtruth=os.path.join(indir, log_file + '_structured.csv'),
         parsedresult=os.path.join(output_dir, log_file + '_structured.csv')
     )
     bechmark_result.append([dataset, accuracy_PA, accuracy_exact_string_matching, edit_distance_result, edit_distance_result_median])
+# 设置最大显示的行数
+pd.set_option('display.max_rows', None)
 
+# 设置最大显示的列数
+pd.set_option('display.max_columns', None)
 print('\n=== Overall evaluation results ===')
 df_result = pd.DataFrame(bechmark_result, columns=['Dataset', 'Accuracy_PA', 'Accuracy_ExactMatching','Edit_distance', 'Edit_distance_std'])
 df_result.set_index('Dataset', inplace=True)

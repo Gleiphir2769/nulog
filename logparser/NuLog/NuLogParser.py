@@ -450,7 +450,7 @@ class LogParser:
 
         if not os.path.exists(self.savePath):
             os.makedirs(self.savePath)
-            
+
         df_len = self.df_log.shape[0]
        
         data_tokenized = []
@@ -467,7 +467,7 @@ class LogParser:
         model.to('cuda')
         model.cuda()
         model_opt = torch.optim.Adam(model.parameters(), lr=self.lr, betas=self.betas, weight_decay=self.weight_decay)
-       
+
         for epoch in range(self.nr_epochs):
             model.train()
             print("Epoch", epoch)
@@ -479,7 +479,7 @@ class LogParser:
         #model.cuda()
         results = self.run_test(test_dataloader, model,
                            SimpleLossCompute(model.generator, criterion, None, is_test=True))
-        
+
         data_words = []
         indices_from = []
 
@@ -499,14 +499,114 @@ class LogParser:
 
         p = pd.DataFrame({"indices": indices_from, "predictions": data_words})
         p = p.groupby('indices')['predictions'].apply(list).reset_index()
-  
+
         parsed_logs = []
         for i in p.predictions.values:
             parsed_logs.append(str(''.join(i)).strip())
-       
+
         df_event = self.outputResult(parsed_logs)
         df_event.to_csv(self.savePath+self.logName+"_structured.csv", index=False)
 
+    def parse_for_USE_HDFS(self, logName, batch_size=5, mask_percentage=1.0, pad_len=150, N=1, d_model=256,
+              dropout=0.1, lr=0.001, betas=(0.9, 0.999), weight_decay=0.005, nr_epochs=1, num_samples=0, step_size=10):
+        self.logName = logName
+        self.mask_percentage = mask_percentage
+        self.pad_len = pad_len
+        self.batch_size = batch_size
+        self.N = N
+        self.d_model = d_model
+        self.dropout = dropout
+        self.lr = lr
+        self.betas = betas
+        self.weight_decay = weight_decay
+        self.num_samples = num_samples
+        self.nr_epochs = nr_epochs
+        self.step_size = step_size
+        self.load_data()
+
+        if not os.path.exists(self.savePath):
+            os.makedirs(self.savePath)
+
+        df_len = self.df_log.shape[0]
+
+        data_tokenized = []
+
+        for i in trange(0, df_len):
+            tokenized = self.tokenizer.tokenize('<CLS> ' + self.df_log.iloc[i].Content)
+            data_tokenized.append(tokenized)
+
+        train_dataloader, test_dataloader = self.get_dataloaders(data_tokenized)
+
+        criterion = nn.CrossEntropyLoss()
+        model = self.make_model(self.tokenizer.n_words, self.tokenizer.n_words, N=self.N, d_model=self.d_model,
+                                d_ff=self.d_model,
+                                dropout=self.dropout, max_len=self.pad_len)
+        model.to('cuda')
+        model.cuda()
+        model_opt = torch.optim.Adam(model.parameters(), lr=self.lr, betas=self.betas, weight_decay=self.weight_decay)
+
+        for epoch in range(self.nr_epochs):
+            model.train()
+            print("Epoch", epoch)
+            self.run_epoch(train_dataloader, model,
+                           SimpleLossCompute(model.generator, criterion, model_opt))
+            torch.save(model.state_dict(), self.savePath + 'model_parser_' + self.logName + str(epoch) + '.pt')
+
+        # model.load_state_dict(torch.load('./AttentionParserResult/model_parser_BGL_2k.log3.pt'))
+        # model.cuda()
+        results = self.run_test(test_dataloader, model,
+                                SimpleLossCompute(model.generator, criterion, None, is_test=True))
+
+        data_words = []
+        indices_from = []
+
+        for i, (x, y, ind) in enumerate(results):
+
+            # print(ind)
+            for j in range(len(x)):
+                if not self.num_there(self.tokenizer.index2word[y[j]]):
+                    if y[j] in x[j][-self.k:]:
+                        data_words.append(self.tokenizer.index2word[y[j]])
+                    else:
+                        data_words.append("<*>")
+                else:
+                    data_words.append("<*>")
+
+            indices_from += ind.tolist()
+
+        p = pd.DataFrame({"indices": indices_from, "predictions": data_words})
+        p = p.groupby('indices')['predictions'].apply(list).reset_index()
+
+        parsed_logs = []
+        templates_revert = {}
+        templates = {}
+        template_id = 1
+        log2temp = {}
+        for i, tokens in enumerate(p.predictions.values):
+            parsed_res = str(''.join(tokens)).strip()
+            parsed_logs.append(parsed_res)
+
+            if parsed_res not in templates_revert:
+                templates_revert[parsed_res] = template_id
+                templates[template_id] = parsed_res
+                template_id += 1
+
+            log2temp[i] = templates_revert[parsed_res]
+
+        parsed_logs_writer = open(self.savePath + self.logName + "_structured_USE.csv", 'w', encoding='utf-8')
+        for log_id, parsed_log in enumerate(parsed_logs):
+            parsed_logs_writer.write(str(log_id) + ',' + str(parsed_log) + '\n')
+
+        logs_template_writer = open(self.savePath + self.logName + "_log2temp.csv", 'w', encoding='utf-8')
+        for log_id, temp_id in log2temp.items():
+            logs_template_writer.write(str(log_id) + ',' + str(temp_id) + '\n')
+
+        templates_writer = open(self.savePath + self.logName + "_templates.csv", 'w', encoding='utf-8')
+        for temp_id, template in templates.items():
+            templates_writer.write(str(temp_id) + ',' + str(template) + '\n')
+
+        df_event = self.outputResult(parsed_logs)
+        df_event.to_csv(self.savePath + self.logName + "_structured.csv", index=False)
 
 
     def get_dataloaders(self, data_tokenized):
